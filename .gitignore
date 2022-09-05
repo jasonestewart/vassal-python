@@ -1,0 +1,6 @@
+.python-version
+*.txt
+images
+classlib/*
+inc/VASSAL/tools/python/vassal-tools.code-workspace
+*.vmod
