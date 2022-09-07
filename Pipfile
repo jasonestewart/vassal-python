@@ -8,6 +8,7 @@ numpy = "*"
 pillow = "*"
 opencv-python = "*"
 jpype1 = "*"
+ipython = "*"
 
 [dev-packages]
 
