@@ -1,10 +1,7 @@
 from VASSAL.build.module import PieceWindow
 from VASSAL.build import Widget
-from VASSAL.build.widget import PieceSlot
-from VASSAL.build.widget import TabWidget
-from VASSAL.build.widget import PanelWidget
-from VASSAL.build.widget import ListWidget
-from VASSAL.build.widget import BoxWidget
+from VASSAL.build.widget import PieceSlot,TabWidget,PanelWidget,ListWidget,BoxWidget
+
 from .util import isPieceWidget, isPieceWindow
 
 
