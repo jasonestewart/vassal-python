@@ -47,3 +47,7 @@ jpype.addClassPath("classlib/") # Helper.class
 from vassal.manager import Manager
 
 ```
+
+## Example Applications
+* module-print.py: recursively prints the names of all the piece windows and the pieces in each window
+* add-starting-strengths.py: compares the name of each piece in the module to a predefined list of piece names, and if found, creates a new "StartingStrength" trait on the piece and sets the value to that listed in the file
