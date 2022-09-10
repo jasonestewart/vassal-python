@@ -10,7 +10,7 @@ from vassal.walker import Walker
 manager = Manager()
 gameModule = manager.open_module("./test.vmod")
 walker = Walker(gameModule)
-walker.printGameModulePieces()
+walker.print_game_module_pieces()
 
 print("Success!")
 exit()

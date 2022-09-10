@@ -3,6 +3,8 @@
 images
 classlib/*
 *.vmod
-lib/*
+lib
 .idea/*
 *.iml
+tmp/*
+*.xml

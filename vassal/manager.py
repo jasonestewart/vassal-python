@@ -19,3 +19,9 @@ class Manager:
 
     def open_module(self, module_filename):
         return self._instance.initGameModule(module_filename)
+
+    def get_build_string(self, module):
+        return self._instance.getBuildString(module)
+
+    def save(self, module):
+        return self._instance.saveGameModule(module)

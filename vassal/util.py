@@ -15,7 +15,6 @@ def isPieceWidget(pw):
         VASSAL.build.module.PieceWindow,
         VASSAL.build.widget.TabWidget,
         VASSAL.build.widget.ListWidget,
-        VASSAL.build.widget.PieceSlot,
         VASSAL.build.widget.PanelWidget,
         VASSAL.build.widget.BoxWidget)
                       )
