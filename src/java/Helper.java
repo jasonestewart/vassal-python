@@ -1,6 +1,9 @@
 package VASSAL.tools.python;
 
 import VASSAL.Info;
+import VASSAL.counters.Decorator;
+import VASSAL.counters.GamePiece;
+import VASSAL.counters.UsePrototype;
 import VASSAL.launch.StandardConfig;
 import VASSAL.build.GameModule;
 import VASSAL.build.module.GameState;
@@ -26,6 +29,7 @@ public final class Helper {
   private final String javaVersion;
   private final Command[] myCommand = new Command[1];
   private final boolean inited;
+  public void shutdown(){System.exit(0);}
 
   public Helper(String version) {
     pythonVersion = version;
@@ -47,6 +51,10 @@ public final class Helper {
 
   public Command getCommand() {
     return myCommand[0];
+  }
+
+  public GamePiece getPrototype(GamePiece p) {
+    return Decorator.getDecorator(p, UsePrototype.class);
   }
 
   public String getBuildString(GameModule module) {

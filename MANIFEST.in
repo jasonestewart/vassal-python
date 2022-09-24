@@ -1,0 +1,3 @@
+recursive-include src/java *.java
+recursive-include src/python *.py
+recursive-include tools/ *.sh

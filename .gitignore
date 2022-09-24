@@ -8,3 +8,4 @@ lib
 *.iml
 tmp/*
 *.xml
+/ipython_log.py

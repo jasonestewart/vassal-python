@@ -7,10 +7,12 @@ name = "pypi"
 numpy = "*"
 pillow = "*"
 opencv-python = "*"
-jpype1 = "*"
-ipython = "*"
+jpype1 = ">=1.2.1<2.*"
+pytesseract = "*"
 
 [dev-packages]
+ipython = "*"
+stubgenj = "*"
 
 [requires]
 python_version = "3.10"

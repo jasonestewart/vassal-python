@@ -14,7 +14,7 @@ The package implements the following modules for working with VASSAL game module
 The class that wraps a headless version of the VASSAL so that it is possible to call all the module loading, parsing, and saving features without a Swing GUI.
 
 ```python
-from vassal.manager import Manager
+from python.vassal.manager import Manager
 
 manager = Manager()
 gameModule = manager.open_module("./test.vmod")
@@ -25,8 +25,8 @@ gameModule = manager.open_module("./test.vmod")
 The class that enables recursive descent into the Buildables hierarchy of a game module and enables printing or actions on pieces and components.
 
 ```python
-from vassal.manager import Manager
-from vassal.walker import Walker
+from python.vassal.manager import Manager
+from python.vassal.walker import Walker
 
 manager = Manager()
 gameModule = manager.open_module("./test.vmod")
@@ -43,8 +43,8 @@ import jpype
 import jpype.imports
 
 jpype.addClassPath("./lib/Vengine.jar")
-jpype.addClassPath("classlib/") # Helper.class
-from vassal.manager import Manager
+jpype.addClassPath("classlib/")  # Helper.class
+from python.vassal.manager import Manager
 
 ```
 

@@ -5,14 +5,11 @@ import re
 import jpype
 import jpype.imports
 
-jpype.addClassPath("../vassal/release-prepare/target/lib/Vengine.jar")
-jpype.addClassPath("classlib/")
-
 from vassal.manager import Manager
 from vassal.walker import Walker
+from vassal.util import is_piece_widget
 import VASSAL.build.widget.PieceSlot
 from VASSAL.counters import Marker
-from vassal.util import isPieceWidget
 
 my_parser = argparse.ArgumentParser(description='add starting strength decorators to units of a GBACW VASSAL module',
                                     prog='add-starting-strengths',
@@ -27,7 +24,7 @@ my_parser.add_argument('--ssfile',
                        type=str,
                        required=True,
                        help='the path to the starting strengths file')
- my_parser.add_argument('--buildfile',
+my_parser.add_argument('--buildfile',
                        action='store',
                        type=str,
                        help='write out the buildFile.xml')
@@ -58,19 +55,9 @@ print(f'found {len(IMG_NAMES.keys())} pieces in {ssfile_path}')
 manager = Manager()
 module = manager.open_module(modfile_path)
 walker = Walker(module)
-walker.print_game_module_pieces()
-
-
-def get_piece_names(walker, node):
-    if isinstance(node, VASSAL.build.widget.PieceSlot):
-        pieces.append(node.getPiece().getName())
-        return False
-    else:
-        return True
-
 
 def add_starting_strengths(walker, node):
-    if isPieceWidget(node):
+    if is_piece_widget(node):
         return True
     elif isinstance(node, VASSAL.build.widget.PieceSlot):
         add_starting_strength(node)
