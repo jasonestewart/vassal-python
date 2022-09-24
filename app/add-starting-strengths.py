@@ -56,6 +56,7 @@ manager = Manager()
 module = manager.open_module(modfile_path)
 walker = Walker(module)
 
+
 def add_starting_strengths(walker, node):
     if is_piece_widget(node):
         return True
