@@ -212,6 +212,102 @@ Success!
 ## piece-edit.py - (GBACW-specific)
 Uses the GBACW module included in this package to find game pieces based on prototype. For example, find all "Leaders" on the side "USA" and create four new global properties using that leader's name as the basis for the property name.
 
+# Installing vassal-python
+Using the normal python tools for install python packages (e.g. `pip` or `pipenv`) isn't working well for the project (I'm a python novice - ***advice accepted***).
+
+So for now, until I get the package installation working properly with all the files, the best way to install is to grab the files on github using clone or zipfile download:
+
+## The github way: git clone
+
+```shell
+$ git clone https://github.com/jasonestewart/vassal-python.git
+... [SNIP: file install list]
+```
+
+## Download the zip file
+
+1. Open your web browser
+2. Go to https://github.com/jasonestewart/vassal-python
+3. Click on the green "Code" button 
+![github-code-button|247x132](upload://jNJiT8JkITfWeE1sPijRzVpPJsm.png)
+4. Choose download ZIP
+![github-code-zipfile|327x222](upload://dkLxriPBsyQumMBy0I8kmAT7AwL.png)
+5. Unpack the zip
+
+## Setting up the environment & installing required packages
+No matter which way you've done it, you'll have a directory, vassal-python, with all the code. We'll `cd` into that directory, and install all the required python packages needed for vassal python to work. But before we do that, we'll want to create a new virtual python environment so that you don't pollute your global environment, and `activate` it:
+```shell
+$ cd vassal-python
+$ python3 -m venv py-vassal-venv
+$ source py-vassal-venv/bin/activate
+(py-vassal-venv) $ 
+```
+When you activated the virtual environment it updates your prompt to let you know by prepending the name of the environment you created: `(vassal-python)`. Make sure you've got that prompt while working on your vassal-python project. See below for how to `deactivate` the environment once you're finished.
+
+Now install all the required python packages:
+```shell
+(py-vassal-venv) $ pip install -r requirements.txt
+... [SNIP: required modules install]
+```
+
+Once all the required python packages have been downloaded, there are two crucial environment variables we must set up for the sample applications to run:
+
+* CLASSPATH: This is used by Java to locate the necessar Java class files. Most of these files are included with your VASSAL installation and there is one extra included with vassal-python. 
+* PYTHONPATH: This is used by python to locate python modules that are not yet installed
+
+```shell
+(py-vassal-venv) $ export PYTHONPATH="$PWD/src/python"
+```
+That one was easy. `$PWD` is the present working directory - the directory we're currently in.
+
+Next we need to configure CLASSPATH. This requires a bit more work. First find the directory your VASSAL is located in (mine lives in `~/VASSAL-3.6.4/`). You'll know you have the correct directory because inside of it there will be another directory called `lib/` and in that directory will be many `.jar` files. You'll know it's the correct one because the main VASSAL jar, `Vengine.jar` will be there. Here's what mine looks like:
+```shell
+(py-vassal-venv) $ ls ~/VASSAL-3.6.4/lib/Vengine.jar
+/home/jasons/VASSAL-3.6.4/lib/Vengine.jar
+```
+Now we're all set to configure CLASSPATH to include the `lib/java` directory (that contains `Helper.class`) and everything in the `vassal/lib` directory, that contains all the `.jar` files:
+```shell
+(py-vassal-venv) $ export CLASSPATH="$PWD/lib/java:/home/jasons/VASSAL-3.6.4/lib/*"
+```
+I went ahead and used the absolute path to the VASSAL lib directory and `$PWD` for the `lib/java` directory that `Helper.class` is in. 
+
+**Aside**: For the sharp-eyed among us - it *actually* is `lib/java/VASSAL/tools/python/Helper.class` because the full name of the class is `VASSAL.tools.python.Helper` and java wants the directory structure to reflect that. Just like python does for it's modules. But by specifying CLASSPATH as `lib/java`, java will look for the package `VASSAL` starting in `lib/java`. Nice, huh?
+
+Once that's done, we're good to run a test! Grab your favorite module, and make a copy (always make a copy - it's good to have backups) and call it test.vmod, and then run the module-print.py application to print all the counter information:
+```shell
+(vassal-python) $ python3 src/python/apps/module-print.py --mod test.vmod
+VASSAL: initGameModule: start
+VASSAL: doInit: start
+VASSAL: init: start
+VASSAL: init: end
+VASSAL: doInit: init finished
+VASSAL: doInit: using moduleFilename: /home/jasons/Downloads/2nd_Kernstown_1.25.vmod
+VASSAL: doInit: creating GameModule
+VASSAL: doInit: finished creating GameModule
+VASSAL: doInit: GameModule.init finished
+VASSAL: doInit: end
+VASSAL: initGameModule: end
+Markers
+Markers
+    Game Markers
+        Abandoned Guns
+        Breastworks/Construction
+        Charge Inf/Cav
+        Collapsed
+... [SNIP: more output]
+Success! 
+
+```
+
+You've now got a working vassal-python installation!
+
+
+When you're done using vassal-python exit your virtual environment safely:
+```shell
+(vassal-python) $ deactivate
+$
+```
+Your prompt reverts back to the original state without the prefix `(vassal-python)`
 # Known Problems
 Here is a list of things I already know are not working as planned.
 
