@@ -1,23 +1,29 @@
 # VASSAL Python
-Tools for manipulating VASSAL module files using python
+## Tools for manipulating VASSAL module files using python. 
+This python module is aimed at developers of VASSAL game modules. It's purpose to automate repetive module upgrades (e.g. adding or removing a new trait to all pieces of a certain type based on some number printed on the piece's physical counter).
 
 Implemented using jpype
 
 The successor to VASSAL::Perl
 
-# Components
+# Core Components
 
-The package implements the following modules for working with VASSAL game modules
+The package implements the following modules for working with VASSAL game modules. These are the essential packages most useful to developers. 
 
 ## Manager
 
-The class that wraps a headless version of the VASSAL so that it is possible to call all the module loading, parsing, and saving features without a Swing GUI.
+The class that wraps a headless version of the VASSAL so that it is possible to call all the module loading, parsing, and saving features without a Swing GUI. It is important to know that it is manager.py that actually calls jpype.startJVM() - so modules need to make sure they import Manager *before* importing any VASSAL java modules - or they will get a runtime error.
 
 ```python
-from python.vassal.manager import Manager
+from vassal.manager import Manager
 
 manager = Manager()
 gameModule = manager.open_module("./test.vmod")
+
+# change some stuff...
+
+manager.save(gameModule)
+print("Success!!")
 ```
 
 ## Walker
@@ -25,8 +31,8 @@ gameModule = manager.open_module("./test.vmod")
 The class that enables recursive descent into the Buildables hierarchy of a game module and enables printing or actions on pieces and components.
 
 ```python
-from python.vassal.manager import Manager
-from python.vassal.walker import Walker
+from vassal.manager import Manager
+from vassal.walker import Walker
 
 manager = Manager()
 gameModule = manager.open_module("./test.vmod")
@@ -34,20 +40,118 @@ walker = Walker(gameModule)
 walker.print_game_module_pieces()
 ```
 
+# Helper modules
+These modules are included to automate certain tasks and to hide some of the Java-ism of the VASSAL code structure.
+
+## Util
+This includes helper methods that are useful for grabbing pieces from piece windows in your module. Arguably, most are too low-level and will be moved into Walker or other module in the future.
+```python
+from vassal.util import is_piece_widget, is_piece_window, is_named_window, piece_has_prototype, get_all_pieces_with_prototype
+from vassal.walker import Walker
+from vassal.manager import Manager
+
+manager = Manager()
+game_module = manager.open_module("test.vmod")
+walker = Walker(game_module)
+pws = walker.get_piece_windows()
+pieces = walker.get_all_module_pieces()
+
+leaders = []
+for p in pieces:
+    if piece_has_prototype(p, "Leader"):
+        leaders.append(p)
+        
+jackson_pw = None
+for pw in pws:
+    if is_named_window(pw, "Jackson Division")
+        usa_pw = pw
+        break
+jackson_pieces = walker.get_all_module_pieces(jackson_pw)
+
+csa_arty = get_all_pieces_with_prototype(pieces, "CSA Artillery")        
+
+# These two are *pretty* low level and probably not generally useful
+if is_piece_window(jackson_pw):
+    print("Found!")
+
+pieces = []
+if is_piece_widget(jackson_pw):
+    pieces.append(list(walker.get_all_module_pieces(pw))) 
+
+```
+
+## GBACW
+This module is specific to the GBACW (Great Battles of the American Civil War) series of modules. It might serve as an example for other module authors.
+
+Some examples:
+```python
+from vassal.GBACW import get_piece_window_by_name
+from vassal.walker import Walker
+from vassal.manager import Manager
+
+manager = Manager()
+game_module = manager.open_module("test.vmod")
+walker = Walker(game_module)
+pws = walker.get_piece_windows()
+usa_inf = get_piece_window_by_name(pws, "USA Infantry")
+usa_cav = get_piece_window_by_name(pws, "USA Cavalry")
+```
+
 ## Loading the JVM
 
-Jpype needs the JVM started before it can begin loading the Java classes. This is handled inside manager.py during the module loading. The JVM needs to find both ```Vengine.jar``` and ```Helper.class``` in the classpath. One easy way to do that is to set the classpath using jpype before loading manager.py
+Jpype needs the JVM started before it can begin loading the Java classes. This is handled inside manager.py during the module loading. The JVM needs to find both ```Vengine.jar``` and ```Helper.class``` in the classpath. One easy way to do that is to configure the classpath using jpype.addClassPath before loading manager.py. 
 
 ```python
 import jpype
 import jpype.imports
 
-jpype.addClassPath("./lib/Vengine.jar")
-jpype.addClassPath("classlib/")  # Helper.class
-from python.vassal.manager import Manager
+jpype.addClassPath("./lib/java/Vengine.jar")
+jpype.addClassPath("lib/java")  # Helper.class
+from vassal.manager import Manager
 
 ```
+Another method is to set the CLASSPATH environment variable before invoking application:
 
-## Example Applications
-* module-print.py: recursively prints the names of all the piece windows and the pieces in each window
-* add-starting-strengths.py: compares the name of each piece in the module to a predefined list of piece names, and if found, creates a new "StartingStrength" trait on the piece and sets the value to that listed in the file
+```shell
+export CLASSPATH="$CLASSPATH:${VASSALPYTHON_HOME}/lib/java/Vengine.jar"
+export CLASSPATH="$CLASSPATH:${VASSALPYTHON_HOME}/lib/java 
+python ${VASSALPYTHON_HOME}/app/module-print.py --mod ${VASSALPYTHON_HOME}/tmp/test.vmod
+```
+
+# Example Applications
+The package includes a few example tools created using this package. They illustrate how to interact with the VASSAL GameModule and it's data from 
+
+## image-scrape.py
+Interactively scrape numbers from counter images and save it in a .csv file 
+
+## add-starting-strengths.py
+Compares the name of each piece in the module to the names in the .csv file from image-scrape, and if found, creates a new "StartingStrength" trait on the piece and sets the value to that listed in the file
+
+## module-print.py
+Recursively prints the names of all the piece windows and the pieces in each window
+
+## piece-edit.py - (GBACW-specific)
+Uses the GBACW module included in this package to find game pieces based on prototype. For example, find all "Leaders" on the side "USA" and create four new global properties using that leader's name as the basis for the property name.
+
+# Known Problems
+Here is a list of things I already know are not working as planned.
+
+## Applications hang on exit
+Currently, VASSAL does not close all it's running threads on System.exit() - so python apps will be left hanging after they have completed. (Probably something in how Helper.class needs to fake Swing into thinking it's not running headless when it really is. Probably, VASSAL is trying to pop-up a dialog asking if we want to save.)
+
+They need to be killed to force a shutdown:
+```shell
+$ python3 module-print.pl --mode test.vmod
+... some output
+Success!!
+(hangs)
+^Z
+[1]+  Stopped                 python app/module-print.py --mod test.vmod
+$ kill %1
+[1]+  Exit 143                python app/module-print.py --mod test.vmod
+$
+```
+
+Not graceful, but hey! It works...
+
+I will check to see if it is possible to set a flag so VASSAL doesn't ask for a save.
