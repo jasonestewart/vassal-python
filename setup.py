@@ -44,7 +44,6 @@ setup(
                  "VASSAL-stubs": "lib/python/VASSAL-stubs",
                  "java-stubs": "lib/python/java-stubs",
                  "jpype-stubs": "lib/python/jpype-stubs",
-                 "apps": "apps",
                  },
     package_data={'VASSAL-stubs': ALL_PYI,
                   'java-stubs': ALL_PYI,

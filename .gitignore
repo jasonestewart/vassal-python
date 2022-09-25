@@ -3,9 +3,11 @@
 images
 classlib/*
 *.vmod
-lib
 .idea/*
 *.iml
 tmp/*
 *.xml
 /ipython_log.py
+/build/*
+/dist/*
+PKG-INFO
