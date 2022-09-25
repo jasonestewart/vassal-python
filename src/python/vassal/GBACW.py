@@ -197,9 +197,9 @@ def get_leaders(name_dict, game_module):
     piece_windows = walker.get_piece_windows()
 
     usa_piece_window = get_usa_piece_window(piece_windows)
-    usa_pieces = walker.get_module_pieces_from_widgets([usa_piece_window])
+    usa_pieces = walker.get_module_pieces_from_widgets(usa_piece_window)
     csa_piece_window = get_csa_piece_window(piece_windows)
-    csa_pieces = walker.get_module_pieces_from_widgets([csa_piece_window])
+    csa_pieces = walker.get_module_pieces_from_widgets(csa_piece_window)
 
     csa_names = name_dict['csa']
     usa_names = name_dict['usa']
