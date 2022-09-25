@@ -19,8 +19,9 @@ modfile_path = args.modfile
 
 manager = Manager()
 gameModule = manager.open_module(modfile_path)
+
 walker = Walker(gameModule)
 walker.print_game_module_pieces()
 
 print("Success!")
-exit()
+Manager.shutdown()

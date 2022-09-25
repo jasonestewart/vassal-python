@@ -23,13 +23,33 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class Helper {
   private final String pythonVersion;
   private final String javaVersion;
   private final Command[] myCommand = new Command[1];
   private final boolean inited;
-  public void shutdown(){System.exit(0);}
+  private static AtomicBoolean exitCalled=new AtomicBoolean();
+
+  private static void exit(int status) {
+    if(!exitCalled.get()) {
+      exitCalled.set(true);
+      System.exit(status);
+    }
+  }
+
+  public static void shutdown() {
+    exit(1);
+  }
+
+//  public void shutdown(){
+//    boolean nastyDirtyFilthy = false;
+//    GameModule mod = GameModule.getGameModule();
+//    mod.setDirty(nastyDirtyFilthy);
+//    System.err.println("VASSAL: Surrender, Dorothy!");
+//    System.exit(0);
+//  }
 
   public Helper(String version) {
     pythonVersion = version;

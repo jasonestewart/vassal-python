@@ -1,4 +1,5 @@
 import vassal.manager # ensure JVM started
+from VASSAL.build import Widget
 from VASSAL.build.widget import PieceSlot
 from vassal.gamepiece import GamePiece
 
@@ -7,7 +8,7 @@ from vassal.util import is_piece_widget, is_piece_window
 
 class Walker:
     @staticmethod
-    def _print_widget(self, widget):
+    def _print_widget(self, widget: Widget):
         space = self._level * '    '
         if is_piece_widget(widget):
             name = widget.getAttributeValueString('name')
@@ -29,7 +30,7 @@ class Walker:
         self.data = None
         self.start = None
 
-    def walk(self, callback, start_widget_or_list=None):
+    def walk(self, callback: object, start_widget_or_list: list | object = None) -> ...:
         self._cb = callback
         self._level = -1
         if start_widget_or_list:
@@ -37,6 +38,8 @@ class Walker:
                 pws = start_widget_or_list
             elif is_piece_window(start_widget_or_list):
                 pws = [start_widget_or_list]
+            else:
+                raise Exception(f"Argument error: expected list(PieceWindow) or PieceWindow got: {type(start_widget_or_list)}")
         else:
             pws = self.get_piece_windows()
         for panel in pws:
@@ -54,6 +57,10 @@ class Walker:
         self._level -= 1
 
     def get_walk_level(self):
+        """
+        Used by callback functions to track the depth of the walk (starting at zero)
+        :return: int the current depth
+        """
         return self._level
 
     def get_piece_windows(self):
