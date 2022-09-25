@@ -307,26 +307,10 @@ When you're done using vassal-python exit your virtual environment safely:
 (vassal-python) $ deactivate
 $
 ```
-Your prompt reverts back to the original state without the prefix `(vassal-python)`
+Your prompt reverts to the original state without the prefix `(vassal-python)`
 # Known Problems
 Here is a list of things I already know are not working as planned.
 
 ## Applications hang on exit
-Currently, VASSAL does not close all it's running threads on System.exit() - so python apps will be left hanging after they have completed. (Probably something in how Helper.class needs to fake Swing into thinking it's not running headless when it really is. Probably, VASSAL is trying to pop-up a dialog asking if we want to save.)
+**NOTE**: There is a deadlock condition that happens when exit(0) is called. When this happens, the program hangs after execution is finished. In order to prevent this, programs must call Manager.shutdown() before they exit.
 
-They need to be killed to force a shutdown:
-```shell
-$ python3 module-print.pl --mod test.vmod
-... some output
-Success!!
-(hangs)
-^Z
-[1]+  Stopped                 python app/module-print.py --mod test.vmod
-$ kill %1
-[1]+  Exit 143                python app/module-print.py --mod test.vmod
-$
-```
-
-Not graceful, but hey! It works...
-
-I will check to see if it is possible to set a flag so VASSAL doesn't ask for a save.
