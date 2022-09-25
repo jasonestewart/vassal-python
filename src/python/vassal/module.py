@@ -1,3 +1,5 @@
+import vassal.manager # we make sure the JVM is started before importing VASSAL classes
+
 from VASSAL.build.module.properties import GlobalProperties
 
 GP_CLASS = GlobalProperties().getClass()
