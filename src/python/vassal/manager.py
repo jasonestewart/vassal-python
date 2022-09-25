@@ -50,15 +50,8 @@ class Manager:
     def get_prototype(self, piece):
         return self._instance.getPrototype(piece)
 
-    def shutdown(self) -> None:
-        self._instance.shutdown()
-
-
-@JImplements(Runnable)
-class MyShutdownHook:
-    @JOverride
-    def run(self):
-        Manager().shutdown()
-
-
-# Runtime.getRuntime().addShutdownHook(Thread(MyShutdownHook()))
+    @staticmethod
+    def shutdown() -> None:
+        print(f"Manager: Shutting Down")
+        # Runtime.getRuntime().halt(0);
+        Helper.shutdown()
