@@ -29,14 +29,14 @@ class Walker:
         self.data = None
         self.start = None
 
-    def walk(self, callback, start=None):
+    def walk(self, callback, start_widget_or_list=None):
         self._cb = callback
         self._level = -1
-        if start:
-            if isinstance(start, list):
-                pws = start
-            elif is_piece_window(start):
-                pws = list(start)
+        if start_widget_or_list:
+            if isinstance(start_widget_or_list, list):
+                pws = start_widget_or_list
+            elif is_piece_window(start_widget_or_list):
+                pws = [start_widget_or_list]
         else:
             pws = self.get_piece_windows()
         for panel in pws:
@@ -62,9 +62,9 @@ class Walker:
     def print_game_module_pieces(self):
         self.walk(self._print_widget)
 
-    def get_module_pieces_from_widgets(self, start_list):
+    def get_module_pieces_from_widgets(self, start_widget_or_list):
         self.data = []
-        self.walk(self._get_pieces, start_list)
+        self.walk(self._get_pieces, start_widget_or_list)
         return self.data
 
     def get_all_module_pieces(self):
