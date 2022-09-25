@@ -1,5 +1,6 @@
 import argparse
-
+# noinspection PyUnresolvedReferences
+import jpype
 # noinspection PyUnresolvedReferences
 import jpype.imports
 
@@ -7,7 +8,7 @@ from vassal.manager import Manager
 from vassal.walker import Walker
 from vassal.GBACW import get_leaders, do_leader_fixes
 
-from IPython import embed
+# from IPython import embed
 
 my_parser = argparse.ArgumentParser(description='modify pieces of a GBACW VASSAL module',
                                     prog='piece-edit',
@@ -45,7 +46,7 @@ print(f"Found {len(leaders['all_leaders'])} game pieces in {game_module.getGameN
 
 do_leader_fixes(leaders, game_module)
 
-embed()
+# embed()
 
 print("Writing game module")
 manager.save(game_module)

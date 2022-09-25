@@ -24,7 +24,6 @@ PROP_NAME_WRAP = "wrap"
 
 def add_leader_name(leader):
     mark = Marker(LEADER_NAME_KEY, leader)
-    IPython.embed()
     leader.getParent().setPiece(mark)
     name = Decorator.getInnermost(leader).getName()
     match = re.match(r'^\w+', str(name))
@@ -45,11 +44,21 @@ def replace_layer_fix(leader):
 
 
 def get_usa_piece_window(pws):
-    return next(p for p in pws if is_named_window(p, "USA"))
+    return get_piece_window_by_name(pws, 'USA')
 
 
 def get_csa_piece_window(pws):
-    return next(p for p in pws if is_named_window(p, "CSA"))
+    return get_piece_window_by_name(pws, 'CSA')
+
+
+def get_piece_window_by_name(pws, name):
+    window = None
+    for p in pws:
+        if is_named_window(p, name):
+            window = p
+    if not window:
+        raise Exception(f"No {name} Piece Window")
+    return window
 
 
 def find_leader_name(leader_piece):
