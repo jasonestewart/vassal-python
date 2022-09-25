@@ -1,8 +1,9 @@
+import vassal.manager # we make sure the JVM is started before importing VASSAL classes
+
 from VASSAL.build.module import PieceWindow
 from VASSAL.build.widget import TabWidget, PanelWidget, ListWidget, BoxWidget
 from VASSAL.counters import GamePiece
 
-from vassal.manager import Manager
 
 
 def is_piece_window(pw):
@@ -10,6 +11,8 @@ def is_piece_window(pw):
 
 
 def is_named_window(piece_window, name):
+    if not is_piece_window(piece_window):
+        return False
     window_name = piece_window.getAttributeValueString('name')
     return name == window_name
 
