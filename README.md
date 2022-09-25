@@ -123,13 +123,91 @@ The package includes a few example tools created using this package. They illust
 
 ## image-scrape.py
 Interactively scrape numbers from counter images and save it in a .csv file 
+The image scraper will ask for confirmation if it doesn't have sufficient confidence in the guess. It will pop up an image window showing what it scraped and what it's best guess of the number is. Click on the image window and hit `enter` to make it go away and then back in the shell window, hit `enter` to use the default value or type in a new value and hit `enter` to continue. 
+
+```shell
+$ python3 image-scrape.py --image-dir ./images --names-file names.txt --ss-file start-str.txt
+Reading image: 14IN_front.png
+Found strength: 9
+
+Reading image: 14INa_front.png
+Found strength: 5
+
+Reading image: 14INb_front.png
+Found strength: 4
+
+Reading image: 8OH_front.png
+Found strength: 14
+
+Reading image: 8OHa_front.png
+ss_10: 7, ss_8: NONE>> 7
+...[SNIP: interactively prompts user for confirmation]
+enter correct strength: >> 7: 
+Found strength: 7
+...[SNIP: more output]
+Success!
+```
+
 
 ## add-starting-strengths.py
 Compares the name of each piece in the module to the names in the .csv file from image-scrape, and if found, creates a new "StartingStrength" trait on the piece and sets the value to that listed in the file
-
+```shell
+$ python3 add-starting-strengths.py --mod file.vmod --ssfile starting-strengths.txt
+VASSAL: initGameModule: start
+[SNIP: vassal-pyton startup messages]
+VASSAL: initGameModule: end
+Piece: 34MA_8_front.png
+	Found SS for piece: 34MA_8_front.png, strength: 8
+Piece: 5NY_HA_12_front.png
+	Found SS for piece: 5NY_HA_12_front.png, strength: 12
+Piece: 116OH_10_front.png
+	Found SS for piece: 116OH_10_front.png, strength: 10
+Piece: 123OH_10_front.png
+	Found SS for piece: 123OH_10_front.png, strength: 10
+Piece: 170OH_front.png
+	Found SS for piece: 170OH_front.png, strength: 8
+Piece: Ely_front.png
+Piece: 1WV_2_1_AWV_front.png
+	Found SS for piece: 1WV_2_1_AWV_front.png, strength: 8
+Piece: 4WV_front.png
+	Found SS for piece: 4WV_front.png, strength: 8
+Piece: 12WV_2_1_AWV_front.png
+	Found SS for piece: 12WV_2_1_AWV_front.png, strength: 8
+Piece: 18CT_2_1_AWV_front.png
+	Found SS for piece: 18CT_2_1_AWV_front.png, strength: 8
+Piece: 2MD_ES_front.png
+	Found SS for piece: 2MD_ES_front.png, strength: 8
+Piece: Young's_PB_front.png
+	Found SS for piece: Young's_PB_front.png, strength: 8
+[SNIP: more output]
+Success!
+```
 ## module-print.py
 Recursively prints the names of all the piece windows and the pieces in each window
-
+```shell
+$ python3 module-print.pl --mod test.vmod
+VASSAL: initGameModule: start
+... [SNIP: vassal-pyton startup messages]
+VASSAL: initGameModule: end
+USA
+Union Army of West Virginia
+    Commander
+        Crook, AWV
+    Thoburn's Division, 1/AWV
+        Thoburn's Division, 1/AWV
+            Thoburn 1/AWV
+            1/AWV Brigades
+                Wells, 1/1/AWV
+                    Wells 1/1/AWV
+                    Wells Rgmt 1
+                    Wells Rgmt 2
+                    Wells Rgmt 3
+                    Wells Rgmt 4
+                    Wells Rgmt 5
+                Ely, 2/1/AWV
+[SNIP: more output]
+Success!
+```
 ## piece-edit.py - (GBACW-specific)
 Uses the GBACW module included in this package to find game pieces based on prototype. For example, find all "Leaders" on the side "USA" and create four new global properties using that leader's name as the basis for the property name.
 
