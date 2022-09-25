@@ -10,7 +10,7 @@ from PIL import Image
 import re
 
 my_parser = argparse.ArgumentParser(description='parse starting strength from unit counters of a GBACW VASSAL module',
-                                    prog='image',
+                                    prog='image-scrape',
                                     usage='%(prog)s --image-dir ./images --names-file img-names.txt --ss-file starting-strengths.txt')
 my_parser.add_argument('--names-file',
                        action='store',

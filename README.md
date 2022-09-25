@@ -141,7 +141,7 @@ Currently, VASSAL does not close all it's running threads on System.exit() - so 
 
 They need to be killed to force a shutdown:
 ```shell
-$ python3 module-print.pl --mode test.vmod
+$ python3 module-print.pl --mod test.vmod
 ... some output
 Success!!
 (hangs)
