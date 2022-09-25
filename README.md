@@ -98,6 +98,7 @@ usa_cav = get_piece_window_by_name(pws, "USA Cavalry")
 ```
 
 ## Loading the JVM
+vassal-python requires the VASSAL classes (which live in the Venginge.jar file) in order to run. vassal-python is shipped with the latest version of the 3.6.x classes. There is also an interface Java class: `VASSAL.tools.python.Helper` which is required to fake a 'headless' version of VASSAL (no Swing windows or dialogs) and to interact with certain Java-specific VASSAL methods.
 
 Jpype needs the JVM started before it can begin loading the Java classes. This is handled inside manager.py during the module loading. The JVM needs to find both ```Vengine.jar``` and ```Helper.class``` in the classpath. One easy way to do that is to configure the classpath using jpype.addClassPath before loading manager.py. 
 
