@@ -1,7 +1,8 @@
+import vassal.manager # ensure JVM started
 from VASSAL.build.widget import PieceSlot
 from vassal.gamepiece import GamePiece
 
-from .util import is_piece_widget, is_piece_window
+from vassal.util import is_piece_widget, is_piece_window
 
 
 class Walker:
@@ -32,12 +33,16 @@ class Walker:
         self._cb = callback
         self._level = -1
         if start:
-            pws = start
+            if isinstance(start, list):
+                pws = start
+            elif is_piece_window(start):
+                pws = list(start)
         else:
             pws = self.get_piece_windows()
         for panel in pws:
-            if self._cb(self, panel):
-                self._walk(panel)
+            if is_piece_window(panel):
+                if self._cb(self, panel):
+                    self._walk(panel)
 
     def _walk(self, widget):
         self._level += 1
@@ -57,10 +62,13 @@ class Walker:
     def print_game_module_pieces(self):
         self.walk(self._print_widget)
 
-    def get_all_module_pieces(self, start=None):
+    def get_module_pieces_from_widgets(self, start_list):
         self.data = []
-        self.walk(self._get_pieces, start)
+        self.walk(self._get_pieces, start_list)
         return self.data
+
+    def get_all_module_pieces(self):
+        return self.get_module_pieces_from_widgets(None)
 
     # We must track the PieceSlot in case we need to add
     # or delete traits from the GamePiece later
@@ -72,5 +80,3 @@ class Walker:
             return False
         elif is_piece_widget(widget):
             return True
-
-
