@@ -11,7 +11,7 @@ ALL_PYI = [('*/' * depth) + '*.pyi' for depth in range(0, 10)]
 
 setup(
     name="vassal-python",  # Required
-    version="0.2.0",  # Required
+    version="0.4.0",  # Required
     description="Python tools for manipulating VASSAL modules",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
