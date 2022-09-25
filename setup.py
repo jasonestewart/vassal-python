@@ -11,7 +11,7 @@ ALL_PYI = [('*/' * depth) + '*.pyi' for depth in range(0, 10)]
 
 setup(
     name="vassal-python",  # Required
-    version="0.4.2",  # Required
+    version="0.4.3",  # Required
     description="Python tools for manipulating VASSAL modules",  # Optional
     long_description=long_description,  # Optional
     long_description_content_type="text/markdown",  # Optional (see note above)
@@ -44,6 +44,7 @@ setup(
                  "VASSAL-stubs": "lib/python/VASSAL-stubs",
                  "java-stubs": "lib/python/java-stubs",
                  "jpype-stubs": "lib/python/jpype-stubs",
+                 "apps": "apps",
                  },
     package_data={'VASSAL-stubs': ALL_PYI,
                   'java-stubs': ALL_PYI,
@@ -62,7 +63,12 @@ setup(
     #
     # For an analysis of "install_requires" vs pip's requirements files see:
     # https://packaging.python.org/discussions/install-requires-vs-requirements/
-    install_requires=["jpype1>=1.2.1,<2.*"],  # Optional
+    install_requires=["jpype1>=1.2.1,<2.*",
+                      "numpy",
+                      "pillow",
+                      "opencv-python",
+                      "pytesseract",
+                      ],  # Optional
     # List additional groups of dependencies here (e.g. development
     # dependencies). Users will be able to install these using the "extras"
     # syntax, for example:
@@ -71,12 +77,9 @@ setup(
     #
     # Similar to `install_requires` above, these must be valid existing
     # projects.
-    extras_require={  # Optional
-        "dev": ["numpy",
-                "pillow",
-                "opencv-python",
-                "pytesseract"],
-    },
+    # extras_require={  # Optional
+    #     "dev": [],
+    # },
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     # package_data={  # Optional
