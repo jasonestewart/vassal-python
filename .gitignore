@@ -1,5 +1,6 @@
 .python-version
 *.txt
+!requirements.txt
 images
 classlib/*
 *.vmod
