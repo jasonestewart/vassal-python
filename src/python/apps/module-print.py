@@ -5,7 +5,7 @@ import jpype.imports
 
 from vassal.manager import Manager
 from vassal.walker import Walker
-from IPython import embed
+# from IPython import embed
 my_parser = argparse.ArgumentParser(description='print out pieces of a GBACW VASSAL module',
                                     prog='module-print',
                                     usage='%(prog)s --modfile file.vmod')
@@ -19,10 +19,9 @@ modfile_path = args.modfile
 
 manager = Manager()
 gameModule = manager.open_module(modfile_path)
-embed()
 
 walker = Walker(gameModule)
 walker.print_game_module_pieces()
 
 print("Success!")
-exit()
+Manager.shutdown()
